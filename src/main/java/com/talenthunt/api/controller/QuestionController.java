@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.talenthunt.api.model.Category;
-import com.talenthunt.api.model.QuestionType;
 import com.talenthunt.api.model.User;
 import com.talenthunt.api.repository.CategoryRepository;
-import com.talenthunt.api.repository.QuestionTypeRepository;
 import com.talenthunt.api.repository.SubjectRepository;
 
 /**
@@ -30,8 +28,7 @@ public class QuestionController
 	CategoryRepository categoryRepository;
 	@Autowired
 	SubjectRepository subjectRepository;
-	@Autowired
-	QuestionTypeRepository questionTypeRepository;
+	
 	
 	/**
 	 * Get all category
@@ -42,15 +39,6 @@ public class QuestionController
 	    return categoryRepository.findAll();
 	  }
 	
-	/**
-	 * Get all category
-	 * @return list category
-	 */
-	@GetMapping("/questiontype")
-	  public List<QuestionType> getAllQuestionType() {
-	    return questionTypeRepository.findAll();
-	  }
-
 	
 	/**
 	 * Get all subject
