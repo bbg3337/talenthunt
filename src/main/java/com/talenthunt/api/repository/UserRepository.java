@@ -8,7 +8,7 @@ import com.talenthunt.api.model.User;
 /**
  * The interface User repository.
  *
- * @author Givantha Kalansuriya
+ * @author Harmohan
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {}

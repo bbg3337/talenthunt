@@ -23,7 +23,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long>
 	 * @param subjectId
 	 * @return
 	 */
-	@Query("SELECT t.* FROM Topic t WHERE t.subject.id = :subjectId")
+	@Query("SELECT t FROM Topic t WHERE t.subject.id = :subjectId")
 	List<Topic> findBySubjectId(@Param("subjectId") Long subjectId);
 	
 }
