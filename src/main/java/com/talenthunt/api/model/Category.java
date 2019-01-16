@@ -25,8 +25,8 @@ public class Category
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "category_details", nullable = false)
+    private String categoryName;
 
 	public long getId() {
 		return id;
@@ -37,11 +37,11 @@ public class Category
 	}
 
 	public String getCategory() {
-		return category;
+		return categoryName;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategory(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 

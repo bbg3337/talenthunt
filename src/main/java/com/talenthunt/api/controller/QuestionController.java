@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.talenthunt.api.bo.QuestionBo;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Category;
 import com.talenthunt.api.model.Question;
-import com.talenthunt.api.model.User;
+import com.talenthunt.api.model.Subject;
+import com.talenthunt.api.model.Topic;
 import com.talenthunt.api.repository.CategoryRepository;
 import com.talenthunt.api.repository.QuestionRepository;
 import com.talenthunt.api.repository.SubjectRepository;
@@ -56,7 +58,7 @@ public class QuestionController
 	 * @return list subject
 	 */
 	@GetMapping("/subject")
-	  public List<User> getAllSubject() {
+	  public List<Subject> getAllSubject() {
 	    return subjectRepository.findAll();
 	  }
 
@@ -95,8 +97,40 @@ public class QuestionController
 	   * @return the Question
 	   */
 	  @PostMapping("/question")
-	  public Question createQuestion(@Valid @RequestBody Question question) {
-	    return questionRepository.save(question);
+	  public Question createQuestion(@Valid @RequestBody QuestionBo questionBo) 
+	  {
+		  Question question=new Question();
+		  Subject subject=new Subject();
+		  Topic topic=new Topic();
+		  Category category=new Category();
+		  subject.setId(questionBo.getSubjectId());
+		  topic.setId(questionBo.getTopicId());
+		  category.setId(questionBo.getCategoryId());
+		  question.setAnswer(questionBo.getAnswer());
+		  question.setHint(questionBo.getHint());
+		  question.setQuestion(questionBo.getQuestion());
+		  question.setOptionOne(questionBo.getOptionBo().getOption1());
+		  question.setOptionTwo(questionBo.getOptionBo().getOption2());
+		  question.setOptionThree(questionBo.getOptionBo().getOption3());
+		  question.setOptionFour(questionBo.getOptionBo().getOption4());
+		  question.setSubject(subject);
+		  question.setCategory(category);
+		  question.setTopic(topic);
+		  return questionRepository.save(question);
+	  }
+	  
+	  /**
+	   * Gets question by id.
+	   *
+	   * @param queId the question id
+	   * @return the question by id
+	   * @throws ResourceNotFoundException the resource not found exception
+	   */
+	  @GetMapping("/questions/{categoryid}/{subjectid}/{topicid}/{questioncount}")
+	  public List<Question> getAssessment(@PathVariable(value = "categoryid") Long categoryid,@PathVariable(value = "subjectid") Long subjectid,
+			  @PathVariable(value = "topicid") Long topicid,@PathVariable(value = "questioncount") Long questioncount)
+	      throws ResourceNotFoundException {
+		  return questionRepository.getAssesment(categoryid,subjectid,topicid,questioncount);
 	  }
 
 }
