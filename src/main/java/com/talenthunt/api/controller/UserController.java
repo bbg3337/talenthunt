@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.talenthunt.api.exception.ResourceNotFoundException;
@@ -117,4 +120,21 @@ public class UserController {
     response.put("deleted", Boolean.TRUE);
     return response;
   }
+  
+  @RequestMapping(value = "/Login", params = { "userName", "password" }, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<User> loginMethod(@RequestParam String userName, @RequestParam String password)
+			throws ResourceNotFoundException {		
+		boolean flag = true;		
+		for (User users : userRepository.findAll()) {
+			if (users.getEmail().equals(userName) && users.getPassword().equals(password)) {
+				flag = false;
+				return ResponseEntity.ok(users);
+			}
+		}
+		if (flag) {
+			throw new ResourceNotFoundException("User not found");
+		}
+		return ResponseEntity.ok(new User());
+	}
 }

@@ -1,5 +1,7 @@
 package com.talenthunt.api.controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,8 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.talenthunt.api.bo.OptionsBo;
 import com.talenthunt.api.bo.QuestionBo;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Category;
@@ -132,5 +138,44 @@ public class QuestionController
 	      throws ResourceNotFoundException {
 		  return questionRepository.getAssesment(categoryid,subjectid,topicid,questioncount);
 	  }
+	  
+	  @GetMapping("/assesment/{categoryid}/{subjectid}/{topicid}/{questioncount}")
+	  public List<QuestionBo> getAssessmentbo(@PathVariable(value = "categoryid") Long categoryid,@PathVariable(value = "subjectid") Long subjectid,
+			  @PathVariable(value = "topicid") Long topicid,@PathVariable(value = "questioncount") Long questioncount)
+	      throws ResourceNotFoundException {
+		  List<Question> questionList=new ArrayList<Question>();
+		  List<QuestionBo> questionboList=new ArrayList<QuestionBo>();
+		  questionList=questionRepository.getAssesment(categoryid,subjectid,topicid,questioncount);
+		  if (questionList.size()>0)
+		  {
+			  Iterator<Question> iterator=questionList.iterator();
+			  Question question=iterator.next();
+			  QuestionBo bo=new QuestionBo();
+			  OptionsBo optionsBo=new OptionsBo();
+			  optionsBo.setOption1(question.getOptionOne());
+			  optionsBo.setOption2(question.getOptionTwo());
+			  optionsBo.setOption3(question.getOptionThree());
+			  optionsBo.setOption4(question.getOptionFour());
+			  bo.setQuestion(question.getQuestion());
+			  bo.setId(question.getId());
+			  bo.setOptionBo(optionsBo);
+			  questionboList.add(bo);
+		  }
+		  return questionboList;
+	  }
 
+	  @RequestMapping(value = "/AnswerStatus", params = { "id", "answer" }, method = RequestMethod.POST)
+		@ResponseBody
+		public ResponseEntity<String> getAnswerStatus(@RequestParam Long id, @RequestParam String answer)
+				throws ResourceNotFoundException {
+			Question question = questionRepository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException("Question not found  "));
+			System.out.println("Question : " + question);
+
+			if (question.getAnswer().equals(answer)) {
+				return ResponseEntity.ok("Correct Answer");
+			} else {
+				return ResponseEntity.ok("Wrong Answer");
+			}
+		}
 }
