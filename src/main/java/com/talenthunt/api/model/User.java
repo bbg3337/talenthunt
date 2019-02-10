@@ -2,12 +2,15 @@ package com.talenthunt.api.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -62,11 +65,13 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
     
-    @Column(name = "user_type", nullable = false)
-    private String userType;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usertype_id")
+    private Usertype userType;
     
-    @Column(name = "roles", nullable = false)
-    private String roles;
+    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name = "roles_id", nullable = false)
+    private Roles roles;
   public String getPassword() {
 		return password;
 	}
@@ -75,19 +80,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getUserType() {
-		return userType;
-	}
 
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
-	public String getRoles() {
+	public Roles getRoles() {
 		return roles;
 	}
 
-	public void setRoles(String roles) {
+	public void setRoles(Roles roles) {
 		this.roles = roles;
 	}
 
@@ -248,6 +246,14 @@ public class User {
                 ", updatedby='" + updatedBy + '\'' +
                 '}';
     }
+
+	public Usertype getUserType() {
+		return userType;
+	}
+
+	public void setUserType(Usertype userType) {
+		this.userType = userType;
+	}
 
 
 }

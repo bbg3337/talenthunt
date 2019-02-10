@@ -3,7 +3,7 @@ package com.talenthunt.api.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.talenthunt.api.model.Subject;
+import com.talenthunt.api.model.Assesment;
 
 /**
  * The interface User repository.
@@ -11,4 +11,4 @@ import com.talenthunt.api.model.Subject;
  * @author Harmohan
  */
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, Long> {}
+public interface AssessmentRepository extends JpaRepository<Assesment, Long> {}
