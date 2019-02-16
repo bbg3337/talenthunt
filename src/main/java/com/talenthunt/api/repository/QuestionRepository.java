@@ -11,6 +11,7 @@ import com.talenthunt.api.model.Question;
 
 /**
  * The interface User repository.
+ *Question repository
  *
  * @author Harmohan
  */
