@@ -42,10 +42,10 @@ public class UserController {
    *
    * @return the list
    */
-  @GetMapping("/users")
-  public List<User> getAllUsers() {
-    return userRepository.findAll();
-  }
+	@GetMapping("/users")
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
+	}
 
   /**
    * Gets users by id.
@@ -121,7 +121,7 @@ public class UserController {
     return response;
   }
   
-  @RequestMapping(value = "/Login", params = { "userName", "password" }, method = RequestMethod.POST)
+  	@RequestMapping(value = "/Login", params = { "userName", "password" }, method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<User> loginMethod(@RequestParam String userName, @RequestParam String password)
 			throws ResourceNotFoundException {		
