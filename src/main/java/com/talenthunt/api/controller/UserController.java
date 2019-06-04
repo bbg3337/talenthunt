@@ -125,8 +125,9 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<User> loginMethod(@RequestParam String userName, @RequestParam String password)
 			throws ResourceNotFoundException {		
+  		System.out.println("UserController.loginMethod() userName : " + userName);
 		boolean flag = true;		
-		for (User users : userRepository.findAll()) {
+		for (User users : userRepository.getByEmailId(userName)) {
 			if (users.getEmail().equals(userName) && users.getPassword().equals(password)) {
 				flag = false;
 				return ResponseEntity.ok(users);
