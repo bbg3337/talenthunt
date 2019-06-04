@@ -11,10 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Company;
 import com.talenthunt.api.model.Questions;
+import com.talenthunt.api.model.User;
 import com.talenthunt.api.repository.CompanyRepository;
+import com.talenthunt.api.repository.UserRepository;
+import com.talenthunt.api.service.CommonService;
+
+import net.bytebuddy.utility.RandomString;
 
 @RestController
 @RequestMapping("/api/v1/company")
@@ -23,8 +30,25 @@ public class CompanyController {
 	@Autowired
 	CompanyRepository companyRepository;
 	
+	@Autowired
+	UserRepository userRepository; 
+	
 	@PostMapping("/add")
 	public Company createCompany(@Valid @RequestBody Company company) {
+	  	ObjectMapper mapperObj = new ObjectMapper();
+	  	try {
+			company.setContactPerson(mapperObj.writeValueAsString(company.getContactPersons()));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+	  	User user = new User();
+	  	user.setEmail(company.getCompanyEmail());
+	  	user.setFirstName(company.getCompanyName());
+	  	user.setLastName(company.getCompanyName());
+	  	user.setRoles("Company");
+	  	user.setUserType("Company");
+	  	user.setPassword(CommonService.generatePassword(10));
+	  	userRepository.save(user);
 		return companyRepository.save(company);
 	}
 	
@@ -43,6 +67,12 @@ public class CompanyController {
 	@PostMapping("/update")
 	public Company updateCompany(@Valid @RequestBody Company company) {
 		Company updateCompany = companyRepository.getOne(company.getId());
+		ObjectMapper mapperObj = new ObjectMapper();
+	  	try {
+			updateCompany.setContactPerson(mapperObj.writeValueAsString(company.getContactPersons()));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		updateCompany.setCity(company.getCity());
 		updateCompany.setCompanyName(company.getCompanyName());
 		updateCompany.setCompanyAddress(company.getCompanyAddress());

@@ -1,6 +1,7 @@
 package com.talenthunt.api.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,12 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.talenthunt.api.bo.ContactPerson;
 @Entity
 @Table(name = "company")
 @EntityListeners(AuditingEntityListener.class)
@@ -46,6 +50,9 @@ public class Company {
 	@Column(name = "city")
 	Long city;
 
+	@Column(name="contactPerson")
+	String contactPerson;
+
 	@CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false)
@@ -64,6 +71,9 @@ public class Company {
     @LastModifiedBy
     private String updatedBy;
 
+	@Transient
+	List<ContactPerson> contactPersons;
+    
 	public Long getId() {
 		return id;
 	}
@@ -160,4 +170,20 @@ public class Company {
 		this.updatedBy = updatedBy;
 	}
 
+	public String getContactPerson() {
+		return contactPerson;
+	}
+
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+
+	public List<ContactPerson> getContactPersons() {
+		return contactPersons;
+	}
+
+	public void setContactPersons(List<ContactPerson> contactPersons) {
+		this.contactPersons = contactPersons;
+	}
+	
 }

@@ -3,12 +3,17 @@ package com.talenthunt.api.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.talenthunt.api.enums.AssessmentMode;
+import com.talenthunt.api.enums.DifficultyLevel;
 
 /**
  * Assesment model
@@ -17,40 +22,56 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 
 @Entity
-@Table(name = "assesment")
+@Table(name = "a2t_assessments")
 @EntityListeners(AuditingEntityListener.class)
 public class Assesment 
 {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Column(name="assessment_id")
+    private Integer id;
 	
-	@Column(name = "name", nullable = false)
+	@Column(name = "assessment_name", nullable = false)
     private String name;
 	
-	@Column(name = "description", nullable = false)
-    private String description;
+/*	@Column(name = "description", nullable = false)
+    private String description;*/
 	
-	@Column(name = "mark", nullable = false)
-    private int mark;
+/*	@Column(name = "mark", nullable = false)
+    private int mark;*/
 	
-	@Column(name = "question_count", nullable = false)
+	@Column(name = "no_of_questions", nullable = false)
     private int questionCount;
 	
-	@Column(name = "duration", nullable = false)
+	@Column(name="tags",columnDefinition="TEXT")
+	private String tags;
+	
+	@Column(name="subjects", columnDefinition="TEXT")
+	private String subjects;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="difficulty_level", columnDefinition="ENUM('Beginner','Intermediate','Expert')" )
+	private DifficultyLevel difficultyLevel;
+	
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="assessment_mode" , columnDefinition="ENUM('Regular Mode','Exam Mode')")
+	private AssessmentMode assessmentMode;
+	
+	/*@Column(name = "duration", nullable = false)
     private int duration;
 	
 	@Column(name = "edit_flag", nullable = false)
     private int flagEdit;
 	
 	@Column(name = "back_flag", nullable = false)
-    private int flagBack;
+    private int flagBack;*/
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -62,22 +83,6 @@ public class Assesment
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public int getMark() {
-		return mark;
-	}
-
-	public void setMark(int mark) {
-		this.mark = mark;
-	}
-
 	public int getQuestionCount() {
 		return questionCount;
 	}
@@ -86,30 +91,37 @@ public class Assesment
 		this.questionCount = questionCount;
 	}
 
-	public int getDuration() {
-		return duration;
+	public String getTags() {
+		return tags;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 
-	public int getFlagEdit() {
-		return flagEdit;
+	public String getSubjects() {
+		return subjects;
 	}
 
-	public void setFlagEdit(int flagEdit) {
-		this.flagEdit = flagEdit;
+	public void setSubjects(String subjects) {
+		this.subjects = subjects;
 	}
 
-	public int getFlagBack() {
-		return flagBack;
+	public DifficultyLevel getDifficultyLevel() {
+		return difficultyLevel;
 	}
 
-	public void setFlagBack(int flagBack) {
-		this.flagBack = flagBack;
+	public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+		this.difficultyLevel = difficultyLevel;
+	}
+
+	public AssessmentMode getAssessmentMode() {
+		return assessmentMode;
+	}
+
+	public void setAssessmentMode(AssessmentMode assessmentMode) {
+		this.assessmentMode = assessmentMode;
 	}
 	
 	
-
 }
