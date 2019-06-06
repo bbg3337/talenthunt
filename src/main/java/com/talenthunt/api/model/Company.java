@@ -18,16 +18,34 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
-@Table(name = "Questions")
+@Table(name = "company")
 @EntityListeners(AuditingEntityListener.class)
 public class Company {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "address")
-	private String address;
+	@Column(name = "company_name")
+	String companyName;
 	
+	@Column(name = "phone_no")
+	String phoneNo;
+	
+	@Column(name = "company_email")
+	String companyEmail;
+	
+	@Column(name = "companyAddress")
+	String companyAddress;
+	
+	@Column(name = "industry_type")
+	Long industryType;
+	
+	@Column(name = "state")
+	Long state;
+	
+	@Column(name = "city")
+	Long city;
+
 	@CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false)
@@ -36,21 +54,6 @@ public class Company {
 	@Column(name = "created_by", nullable = false)
     @CreatedBy
     private String createdBy;
-	
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "industry_type")
-	private String industryType;
-	
-	@Column(name = "name")
-	private String name;
-	
-	@Column(name="phonenumber")
-	private String phonenumber;
-		
-	@Column(name="registration")
-	private Integer registration;
 	
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -61,9 +64,6 @@ public class Company {
     @LastModifiedBy
     private String updatedBy;
 
-    @Column(name = "category_details")
-    private String categoryDetails;
-
 	public Long getId() {
 		return id;
 	}
@@ -72,12 +72,60 @@ public class Company {
 		this.id = id;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public String getCompanyEmail() {
+		return companyEmail;
+	}
+
+	public void setCompanyEmail(String companyEmail) {
+		this.companyEmail = companyEmail;
+	}
+
+	public String getCompanyAddress() {
+		return companyAddress;
+	}
+
+	public void setCompanyAddress(String companyAddress) {
+		this.companyAddress = companyAddress;
+	}
+
+	public Long getIndustryType() {
+		return industryType;
+	}
+
+	public void setIndustryType(Long industryType) {
+		this.industryType = industryType;
+	}
+
+	public Long getState() {
+		return state;
+	}
+
+	public void setState(Long state) {
+		this.state = state;
+	}
+
+	public Long getCity() {
+		return city;
+	}
+
+	public void setCity(Long city) {
+		this.city = city;
 	}
 
 	public Date getCreatedAt() {
@@ -96,46 +144,6 @@ public class Company {
 		this.createdBy = createdBy;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getIndustryType() {
-		return industryType;
-	}
-
-	public void setIndustryType(String industryType) {
-		this.industryType = industryType;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPhonenumber() {
-		return phonenumber;
-	}
-
-	public void setPhonenumber(String phonenumber) {
-		this.phonenumber = phonenumber;
-	}
-
-	public Integer getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(Integer registration) {
-		this.registration = registration;
-	}
-
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
@@ -150,14 +158,6 @@ public class Company {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
-	}
-
-	public String getCategoryDetails() {
-		return categoryDetails;
-	}
-
-	public void setCategoryDetails(String categoryDetails) {
-		this.categoryDetails = categoryDetails;
 	}
 
 }
