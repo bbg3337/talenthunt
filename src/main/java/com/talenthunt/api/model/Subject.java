@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 
 @Entity
-@Table(name = "subjects")
+@Table(name = "a2t_subjects")
 @EntityListeners(AuditingEntityListener.class)
 public class Subject 
 {
@@ -35,6 +35,9 @@ public class Subject
 	    @JoinColumn(name = "category_id")
 	    private Category category;
 
+	    @Column(name = "licence_type", nullable = false)
+	    private String licenceType;
+	    
 		public long getId() {
 			return id;
 		}
@@ -57,6 +60,14 @@ public class Subject
 
 		public void setCategory(Category category) {
 			this.category = category;
+		}
+
+		public String getLicenceType() {
+			return licenceType;
+		}
+
+		public void setLicenceType(String licenceType) {
+			this.licenceType = licenceType;
 		}
 
 }

@@ -53,8 +53,8 @@ public class QuestionsController {
 	public Questions updateQuestion(@Valid @RequestBody Questions questions) {
 		// questions.setCreatedAt(new Date());
 		Questions updateQuestions = questionsRepository.getOne(questions.getId());
-		updateQuestions.setQuestionHintText(questions.getQuestionHintText());
-		updateQuestions.setAnswerExplanation(questions.getQuestionHintText());
+	/*	updateQuestions.setQuestionHintText(questions.getQuestionHintText());
+		updateQuestions.setAnswerExplanation(questions.getQuestionHintText());*/
 		updateQuestions.setQuestionText(questions.getQuestionText());
 		return questionsRepository.save(updateQuestions);
 	}

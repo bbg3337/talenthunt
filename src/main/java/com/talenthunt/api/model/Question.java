@@ -4,15 +4,12 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,7 +17,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * This is model class for question
@@ -28,9 +24,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  */
 
-@Entity
-@Table(name = "Questions")
-@EntityListeners(AuditingEntityListener.class)
+//@Entity
+//@Table(name = "Questions")
+//@EntityListeners(AuditingEntityListener.class)
 
 public class Question 
 {

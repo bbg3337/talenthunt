@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.talenthunt.api.bo.ContactPerson;
 @Entity
-@Table(name = "company")
+@Table(name = "a2t_company")
 @EntityListeners(AuditingEntityListener.class)
 public class Company {
 	@Id
@@ -38,7 +38,7 @@ public class Company {
 	@Column(name = "company_email")
 	String companyEmail;
 	
-	@Column(name = "companyAddress")
+	@Column(name = "company_address")
 	String companyAddress;
 	
 	@Column(name = "industry_type")
@@ -50,7 +50,7 @@ public class Company {
 	@Column(name = "city")
 	Long city;
 
-	@Column(name="contactPerson")
+	@Column(name="contact_person")
 	String contactPerson;
 
 	@CreationTimestamp

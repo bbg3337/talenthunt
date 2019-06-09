@@ -28,9 +28,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  *
  */
 
-@Entity
-@Table(name = "Questions_subjective")
-@EntityListeners(AuditingEntityListener.class)
+//@Entity
+//@Table(name = "Questions_subjective")
+//@EntityListeners(AuditingEntityListener.class)
 
 public class QuestionSubjective 
 {

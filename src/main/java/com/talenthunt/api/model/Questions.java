@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,45 +19,76 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.talenthunt.api.enums.DifficultyLevel;
+
 @Entity
-@Table(name = "question")
+@Table(name = "a2t_question_bank")
 @EntityListeners(AuditingEntityListener.class)
 public class Questions {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@Column(name="question_id",columnDefinition="int")
+	private Long id;
 
-	@Column(name = "question_text")
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "topic_id",columnDefinition="int")
+	private Topic topic = new Topic();
+	
+	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "subject_id",columnDefinition="int")
+	private Subject subject = new Subject();
+	
+	@Column(name = "question",columnDefinition="TEXT")
 	private String questionText;
 
-	@Column(name = "question_marks")
+	@Enumerated(EnumType.STRING)
+	@Column(name="difficulty_level", columnDefinition="ENUM('Beginner','Intermediate','Expert')" )
+	private DifficultyLevel difficultyLevel;
+	
+	@Column(name="tags",columnDefinition="TEXT")
+	private String tags;
+
+	@Column(name="explanation",columnDefinition="TEXT")
+	private String explanation;
+	
+	@Column(name = "marks",columnDefinition="int")
 	private Double questionMarks;
 
-	@Column(name = "question_negative_marks")
-	private Double questionNegativeMarks;
+	@Column(name = "negative_marking",columnDefinition="int")
+	private Double negativeMarking;
 
-	@Column(name = "language_id")
+	@Column(name="reference_text",columnDefinition="TEXT")
+	private String referenceText;
+	
+	@Column(name = "reference_image",columnDefinition="TEXT")
+	private String referenceImage;
+	
+	@Column(name="question_type_cd",columnDefinition="Char")
+	private String questionTypeCD;
+	
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_on", nullable = false)
+    private Date createdOn;
+
+    @Column(name = "created_by", nullable = false,columnDefinition="int")
+    @CreatedBy
+    private Long createdBy;
+
+    /*@Column(name = "language_id")
 	private long languageId;
 
 	@Column(name = "complexity_id")
 	private long complexityId;
 
-	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(name = "subject_id")
-	private Subject subject = new Subject();
-
+	
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	private Category category = new Category();
 
-	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(name = "topic_id")
-	private Topic topic = new Topic();
 
 	@Column(name = "question_type_id")
 	private long questionTypeId;
@@ -63,77 +96,15 @@ public class Questions {
 	@Column(name = "question_hint_text")
 	private String questionHintText;
 
-	@Column(name = "answer_explanation")
-	private String answerExplanation;
-
-	@Column(name = "question_image_path")
-	private String questionImagePath;
-
 	@Column(name = "is_active")
-	private Boolean isActive;
-
-	public long getId() {
+	private Boolean isActive;*/
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getQuestionText() {
-		return questionText;
-	}
-
-	public void setQuestionText(String questionText) {
-		this.questionText = questionText;
-	}
-
-	public Double getQuestionMarks() {
-		return questionMarks;
-	}
-
-	public void setQuestionMarks(Double questionMarks) {
-		this.questionMarks = questionMarks;
-	}
-
-	public Double getQuestionNegativeMarks() {
-		return questionNegativeMarks;
-	}
-
-	public void setQuestionNegativeMarks(Double questionNegativeMarks) {
-		this.questionNegativeMarks = questionNegativeMarks;
-	}
-
-	public long getLanguageId() {
-		return languageId;
-	}
-
-	public void setLanguageId(long languageId) {
-		this.languageId = languageId;
-	}
-
-	public long getComplexityId() {
-		return complexityId;
-	}
-
-	public void setComplexityId(long complexityId) {
-		this.complexityId = complexityId;
-	}
-
-	public Subject getSubject() {
-		return subject;
-	}
-
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	public Topic getTopic() {
@@ -144,94 +115,99 @@ public class Questions {
 		this.topic = topic;
 	}
 
-	public long getQuestionTypeId() {
-		return questionTypeId;
+	public Subject getSubject() {
+		return subject;
 	}
 
-	public void setQuestionTypeId(long questionTypeId) {
-		this.questionTypeId = questionTypeId;
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
 
-	public String getQuestionHintText() {
-		return questionHintText;
+	public String getQuestionText() {
+		return questionText;
 	}
 
-	public void setQuestionHintText(String questionHintText) {
-		this.questionHintText = questionHintText;
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
 	}
 
-	public String getAnswerExplanation() {
-		return answerExplanation;
+	public DifficultyLevel getDifficultyLevel() {
+		return difficultyLevel;
 	}
 
-	public void setAnswerExplanation(String answerExplanation) {
-		this.answerExplanation = answerExplanation;
+	public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+		this.difficultyLevel = difficultyLevel;
 	}
 
-	public String getQuestionImagePath() {
-		return questionImagePath;
+	public String getTags() {
+		return tags;
 	}
 
-	public void setQuestionImagePath(String questionImagePath) {
-		this.questionImagePath = questionImagePath;
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 
-	public Boolean getIsActive() {
-		return isActive;
+	public String getExplanation() {
+		return explanation;
 	}
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
+	public void setExplanation(String explanation) {
+		this.explanation = explanation;
 	}
 
-	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", updatable = false )
-	private Date createdAt;
-
-	@Column(name = "created_by", updatable = false )
-	@CreatedBy
-	private String createdBy;
-
-	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
-	private Date updatedAt;
-
-	@Column(name = "updated_by")
-	@LastModifiedBy
-	private String updatedBy;
-
-	public Date getCreatedAt() {
-		return createdAt;
+	public Double getQuestionMarks() {
+		return questionMarks;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setQuestionMarks(Double questionMarks) {
+		this.questionMarks = questionMarks;
 	}
 
-	public String getCreatedBy() {
+	public Double getNegativeMarking() {
+		return negativeMarking;
+	}
+
+	public void setNegativeMarking(Double negativeMarking) {
+		this.negativeMarking = negativeMarking;
+	}
+
+	public String getReferenceText() {
+		return referenceText;
+	}
+
+	public void setReferenceText(String referenceText) {
+		this.referenceText = referenceText;
+	}
+
+	public String getReferenceImage() {
+		return referenceImage;
+	}
+
+	public void setReferenceImage(String referenceImage) {
+		this.referenceImage = referenceImage;
+	}
+
+	public String getQuestionTypeCD() {
+		return questionTypeCD;
+	}
+
+	public void setQuestionTypeCD(String questionTypeCD) {
+		this.questionTypeCD = questionTypeCD;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-	
 }
