@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Company;
 import com.talenthunt.api.model.Questions;
@@ -45,8 +46,7 @@ public class CompanyController {
 	  	user.setEmail(company.getCompanyEmail());
 	  	user.setFirstName(company.getCompanyName());
 	  	user.setLastName(company.getCompanyName());
-	  	user.setRoles("Company");
-	  	user.setUserType("Company");
+	  	user.setUserType(UserType.BOOK_USER);
 	  	user.setPassword(CommonService.generatePassword(10));
 	  	userRepository.save(user);
 		return companyRepository.save(company);

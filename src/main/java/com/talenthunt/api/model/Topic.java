@@ -21,15 +21,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 @Entity
-@Table(name = "topics")
+@Table(name = "a2t_topics")
 @EntityListeners(AuditingEntityListener.class)
 public class Topic
 {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Column(name="topic_id", columnDefinition="int")
+    private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "topic_name", nullable = false)
     private String name;
     
     @OneToOne(cascade = CascadeType.ALL)

@@ -23,6 +23,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.talenthunt.api.enums.DifficultyLevel;
+import com.talenthunt.api.enums.QuestionTypeCD;
 
 @Entity
 @Table(name = "a2t_question_bank")
@@ -66,8 +67,9 @@ public class Questions {
 	@Column(name = "reference_image",columnDefinition="TEXT")
 	private String referenceImage;
 	
-	@Column(name="question_type_cd",columnDefinition="Char")
-	private String questionTypeCD;
+	@Enumerated(EnumType.STRING)
+	@Column(name="question_type_cd", columnDefinition="enum('Multi-Select','Single-Select','True-False','Short-Answer','Long-Answer')" )
+	private QuestionTypeCD questionTypeCD;
 	
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -186,12 +188,12 @@ public class Questions {
 	public void setReferenceImage(String referenceImage) {
 		this.referenceImage = referenceImage;
 	}
-
-	public String getQuestionTypeCD() {
+	
+	public QuestionTypeCD getQuestionTypeCD() {
 		return questionTypeCD;
 	}
 
-	public void setQuestionTypeCD(String questionTypeCD) {
+	public void setQuestionTypeCD(QuestionTypeCD questionTypeCD) {
 		this.questionTypeCD = questionTypeCD;
 	}
 
