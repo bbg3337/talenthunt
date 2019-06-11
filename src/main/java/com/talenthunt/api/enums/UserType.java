@@ -1,11 +1,11 @@
 package com.talenthunt.api.enums;
 
 public enum UserType {
-	BOOK_USER("Book User"),
+	Book_User("Book_User"),
 	SUBSCRIPTION("Subscription"),
-	GUEST_USER("Guest User"),
+	Guest_User("Guest_User"),
 	ADMIN("Admin"),
-	EXAM_PURCHASE("Exam Purchase");
+	Exam_Purchase("Exam_Purchase");
 	
 	String value;
 

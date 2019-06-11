@@ -28,8 +28,8 @@ public class Assesment
 {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="assessment_id")
-    private Integer id;
+	@Column(name="assessment_id",columnDefinition="int")
+    private Long id;
 	
 	@Column(name = "assessment_name", nullable = false)
     private String name;
@@ -55,7 +55,7 @@ public class Assesment
 	
 
 	@Enumerated(EnumType.STRING)
-	@Column(name="assessment_mode" , columnDefinition="ENUM('Regular Mode','Exam Mode')")
+	@Column(name="assessment_mode" , columnDefinition="ENUM('Regular_Mode', 'Exam_Mode')")
 	private AssessmentMode assessmentMode;
 	
 	/*@Column(name = "duration", nullable = false)
@@ -67,11 +67,11 @@ public class Assesment
 	@Column(name = "back_flag", nullable = false)
     private int flagBack;*/
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -122,6 +122,4 @@ public class Assesment
 	public void setAssessmentMode(AssessmentMode assessmentMode) {
 		this.assessmentMode = assessmentMode;
 	}
-	
-	
 }

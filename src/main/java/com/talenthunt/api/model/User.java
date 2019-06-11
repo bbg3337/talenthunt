@@ -60,9 +60,9 @@ public class User {
     private Date dateJoined;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name="user_type", columnDefinition="enum('Book User','Subscription','Guest User','Admin','Exam Purchase')" )
+	@Column(name="user_type", columnDefinition="ENUM('Book_User', 'Subscription', 'Guest_User', 'Admin', 'Exam_Purchase')" )
     private UserType userType;
-    
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="user_status", columnDefinition="enum('active','inactive','renewal_due','quit')" )
     private UserStatus userStatus;

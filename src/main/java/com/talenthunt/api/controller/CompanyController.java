@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,16 +17,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Company;
-import com.talenthunt.api.model.Questions;
 import com.talenthunt.api.model.User;
 import com.talenthunt.api.repository.CompanyRepository;
 import com.talenthunt.api.repository.UserRepository;
 import com.talenthunt.api.service.CommonService;
 
-import net.bytebuddy.utility.RandomString;
-
 @RestController
 @RequestMapping("/api/v1/company")
+@CrossOrigin
 public class CompanyController {
 
 	@Autowired
@@ -46,7 +45,8 @@ public class CompanyController {
 	  	user.setEmail(company.getCompanyEmail());
 	  	user.setFirstName(company.getCompanyName());
 	  	user.setLastName(company.getCompanyName());
-	  	user.setUserType(UserType.BOOK_USER);
+	  	user.setUserType(UserType.Book_User);
+	  	user.setUserName(company.getCompanyEmail());
 	  	user.setPassword(CommonService.generatePassword(10));
 	  	userRepository.save(user);
 		return companyRepository.save(company);
