@@ -76,14 +76,14 @@ public class Questions {
     @Column(name = "created_on", nullable = false)
     private Date createdOn;
 
-    @Column(name = "created_by", nullable = false,columnDefinition="int")
+    @Column(name = "created_by", nullable = false)
     @CreatedBy
-    private Long createdBy;
+    private String createdBy;
 
-    /*@Column(name = "language_id")
-	private long languageId;
+    @Column(name = "language_id" )
+	private Integer languageId;
 
-	@Column(name = "complexity_id")
+	/*@Column(name = "complexity_id")
 	private long complexityId;
 
 	
@@ -205,11 +205,20 @@ public class Questions {
 		this.createdOn = createdOn;
 	}
 
-	public Long getCreatedBy() {
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(Long createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
+
+	public Integer getLanguageId() {
+		return languageId;
+	}
+
+	public void setLanguageId(Integer languageId) {
+		this.languageId = languageId;
+	}
+	
 }

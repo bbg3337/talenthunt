@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Subject Model
+ * 
  * @author Harmohan
  *
  */
@@ -19,30 +20,35 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "a2t_subjects")
 @EntityListeners(AuditingEntityListener.class)
-public class Subject 
-{
-		@Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
-		@Column(name="subject_id", columnDefinition="int")
-	    private long subjectId;
+public class Subject {
+	public Subject() {
+	}
+	public Subject(Long id) {
+		this.subjectId = id;
+	}
 
-		@Column(name = "subject_name", nullable = false)
-	    private String subjectName;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "subject_id", columnDefinition = "int")
+	private Long subjectId;
 
-		public long getSubjectId() {
-			return subjectId;
-		}
+	@Column(name = "subject_name", nullable = false)
+	private String subjectName;
 
-		public void setSubjectId(long subjectId) {
-			this.subjectId = subjectId;
-		}
+	public Long getSubjectId() {
+		return subjectId;
+	}
 
-		public String getSubjectName() {
-			return subjectName;
-		}
+	public void setSubjectId(Long subjectId) {
+		this.subjectId = subjectId;
+	}
 
-		public void setSubjectName(String subjectName) {
-			this.subjectName = subjectName;
-		}
-	    
+	public String getSubjectName() {
+		return subjectName;
+	}
+
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
+
 }

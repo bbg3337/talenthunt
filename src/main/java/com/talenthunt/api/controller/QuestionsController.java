@@ -30,7 +30,13 @@ public class QuestionsController {
 	public Questions createQuestion(@Valid @RequestBody Questions questions) {
 		// questions.setCreatedAt(new Date());
 		System.out.println("QuestionsController.createQuestion()1");
-		return questionsRepository.save(questions);
+		try {
+			return questionsRepository.save(questions);	
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
 	}
 
 	@GetMapping("/get/{id}")
@@ -41,13 +47,12 @@ public class QuestionsController {
 		return ResponseEntity.ok().body(questions);
 	}
 	
-	@GetMapping("/get/{categoryId}/{subjectId}/{topicId}/{languageId}")
-	public List<Questions> getByQuestionType(@PathVariable(value = "categoryId") Long categoryId,
-			@PathVariable(value = "subjectId") Long subjectId,
+	@GetMapping("/get/{subjectId}/{topicId}/{languageId}")
+	public List<Questions> getByQuestionType(@PathVariable(value = "subjectId") Long subjectId,
 			@PathVariable(value = "topicId") Long topicId,
 			@PathVariable(value = "languageId") Long languageId)
 			throws ResourceNotFoundException {
-		List<Questions> questions = questionsRepository.getByQuestionType(categoryId,subjectId,topicId,languageId);
+		List<Questions> questions = questionsRepository.getByQuestionType(subjectId,topicId,languageId);
 		return questions;
 	}
 	

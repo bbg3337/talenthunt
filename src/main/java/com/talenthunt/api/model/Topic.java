@@ -15,27 +15,34 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * Subject Topic Model class
+ * 
  * @author Harmohan
  *
  */
 
-
 @Entity
 @Table(name = "a2t_topics")
 @EntityListeners(AuditingEntityListener.class)
-public class Topic
-{
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="topic_id", columnDefinition="int")
-    private Long id;
+public class Topic {
+	public Topic() {
+		// TODO Auto-generated constructor stub
+	}
 
-    @Column(name = "topic_name", nullable = false)
-    private String name;
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+	public Topic(Long id) {
+		this.id = id;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "topic_id", columnDefinition = "int")
+	private Long id;
+
+	@Column(name = "topic_name", nullable = false)
+	private String name;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "subject_id")
+	private Subject subject;
 
 	public long getId() {
 		return id;

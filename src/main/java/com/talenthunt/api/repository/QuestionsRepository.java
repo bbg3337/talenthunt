@@ -18,8 +18,8 @@ import com.talenthunt.api.model.Questions;
 @Repository
 public interface QuestionsRepository extends JpaRepository<Questions, Long>
 {
-	@Query(value = "SELECT * FROM question Q WHERE Q.category_id = :categoryid AND "
-			+ "Q.subject_id= :subjectid AND +Q.topic_id= :topicid AND language_id = :languageId", nativeQuery = true)
-	List<Questions> getByQuestionType(@Param("categoryid")Long categoryid,@Param("subjectid") Long subjectid,@Param("topicid") Long topicid,@Param("languageId") Long languageId);
+	@Query(value = "SELECT * FROM a2t_question_bank Q WHERE "
+			+ "Q.subject_id = :subjectid AND +Q.topic_id= :topicid AND language_id = :languageId", nativeQuery = true)
+	List<Questions> getByQuestionType(@Param("subjectid") Long subjectid,@Param("topicid") Long topicid,@Param("languageId") Long languageId);
 	
 }
