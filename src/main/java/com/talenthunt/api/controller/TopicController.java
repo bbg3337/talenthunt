@@ -2,15 +2,20 @@ package com.talenthunt.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.talenthunt.api.exception.ResourceNotFoundException;
+import com.talenthunt.api.model.Subject;
 import com.talenthunt.api.model.Topic;
 import com.talenthunt.api.repository.TopicRepository;
 
@@ -73,5 +78,18 @@ public class TopicController
 	            .findBySubjectId(subjectId);
 		return topic;
 	           
+	  }
+	  
+	  @PostMapping("/topics/create")
+	  public Topic createTopic(@Valid @RequestBody Topic topic){
+		  return topicRepository.save(topic);
+	  }
+	  
+	  @PostMapping("/topics/update")
+	  public Topic updateTopic(@Valid @RequestBody Topic topic){
+		  Topic orgTopic =  topicRepository.getOne(topic.getId());
+		  orgTopic.setName(topic.getName());
+		  orgTopic.setSubject(topic.getSubject());
+		  return topicRepository.save(orgTopic);
 	  }
 }

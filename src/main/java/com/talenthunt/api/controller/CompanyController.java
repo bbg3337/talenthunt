@@ -1,5 +1,7 @@
 package com.talenthunt.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +83,11 @@ public class CompanyController {
 		updateCompany.setPhoneNo(company.getPhoneNo());
 		updateCompany.setState(company.getState());
 		return companyRepository.save(updateCompany);
+	}
+	
+	@GetMapping("/")
+	public List<Company> getCompanyList()
+			throws ResourceNotFoundException {
+		return companyRepository.findAll();
 	}
 }
