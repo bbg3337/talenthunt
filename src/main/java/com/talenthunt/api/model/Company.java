@@ -25,6 +25,13 @@ import com.talenthunt.api.bo.ContactPerson;
 @Table(name = "a2t_company")
 @EntityListeners(AuditingEntityListener.class)
 public class Company {
+	
+	public Company() {
+	}
+	public Company(Long id) {
+		this.id =  id;
+	}
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

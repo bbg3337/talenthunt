@@ -1,13 +1,18 @@
 package com.talenthunt.api.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -67,6 +72,9 @@ public class Assesment
 	@Column(name = "back_flag", nullable = false)
     private int flagBack;*/
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "assessment")
+	private List<AssesmentDetails> assesmentDetails;
+	
 	public Long getId() {
 		return id;
 	}
@@ -121,5 +129,13 @@ public class Assesment
 
 	public void setAssessmentMode(AssessmentMode assessmentMode) {
 		this.assessmentMode = assessmentMode;
+	}
+
+	public List<AssesmentDetails> getAssesmentDetails() {
+		return assesmentDetails;
+	}
+
+	public void setAssesmentDetails(List<AssesmentDetails> assesmentDetails) {
+		this.assesmentDetails = assesmentDetails;
 	}
 }

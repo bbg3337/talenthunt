@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.talenthunt.api.exception.ResourceNotFoundException;
+import com.talenthunt.api.model.Company;
 import com.talenthunt.api.model.User;
 import com.talenthunt.api.repository.UserRepository;
 
@@ -140,4 +141,17 @@ public class UserController {
 		}
 		return ResponseEntity.ok(new User());
 	}
+  	
+  	@PostMapping("/users/createUserByCompany/{companyId}")
+  	public User createUserByCompany(@Valid @RequestBody User user,@PathVariable(value = "companyId") Long companyId){
+  		user.setCompanyId(new Company(companyId));
+  		return userRepository.save(user);
+  	}
+  	
+  	@GetMapping("/users/company/{companyId}")
+    public List<User> getUsersByCompany(@PathVariable(value = "companyId") Long companyId)
+        throws ResourceNotFoundException {
+      List<User> users = userRepository.getByCompanyId(companyId);
+      return users;
+    }
 }

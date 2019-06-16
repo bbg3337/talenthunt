@@ -70,7 +70,7 @@ public class User {
 	@Column(name = "user_rating")
 	private  Integer userRating;
 	 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "company_id", columnDefinition="int" )
 	private  Company companyId;
 
@@ -112,7 +112,7 @@ public class User {
     @Column(name = "updated_by", nullable = false)
     @LastModifiedBy
     private String updatedBy;
- 	
+    
     /*@Column(name = "roles", nullable = false)
     private String roles;*/
     
@@ -292,7 +292,7 @@ public class User {
 		this.updatedBy = updatedBy;
 	}
 
-    @Override
+	@Override
     public String toString() {
         return "User{" +
                 "id=" + id +

@@ -19,7 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Company;
+import com.talenthunt.api.model.CompanyCandidates;
 import com.talenthunt.api.model.User;
+import com.talenthunt.api.repository.CompanyCandidatesRepository;
 import com.talenthunt.api.repository.CompanyRepository;
 import com.talenthunt.api.repository.UserRepository;
 import com.talenthunt.api.service.CommonService;
@@ -30,10 +32,14 @@ import com.talenthunt.api.service.CommonService;
 public class CompanyController {
 
 	@Autowired
-	CompanyRepository companyRepository;
+	private CompanyRepository companyRepository;
 	
 	@Autowired
-	UserRepository userRepository; 
+	private UserRepository userRepository; 
+	
+	@Autowired
+	private CompanyCandidatesRepository companyCandidatesRepository; 
+	
 	
 	@PostMapping("/add")
 	public Company createCompany(@Valid @RequestBody Company company) {
@@ -47,7 +53,7 @@ public class CompanyController {
 	  	user.setEmail(company.getCompanyEmail());
 	  	user.setFirstName(company.getCompanyName());
 	  	user.setLastName(company.getCompanyName());
-	  	user.setUserType(UserType.Book_User);
+	  	user.setUserType(UserType.Admin);
 	  	user.setUserName(company.getCompanyEmail());
 	  	user.setPassword(CommonService.generatePassword(10));
 	  	userRepository.save(user);
@@ -89,5 +95,17 @@ public class CompanyController {
 	public List<Company> getCompanyList()
 			throws ResourceNotFoundException {
 		return companyRepository.findAll();
+	}
+	
+	@PostMapping("/candidates/create")
+	public CompanyCandidates createCandidates(@Valid @RequestBody CompanyCandidates companyCandidates) {
+		CompanyCandidates  candidates = companyCandidatesRepository.save(companyCandidates);
+		return candidates;
+	}
+	
+	@GetMapping("/candidates/{companyId}")
+	public List<CompanyCandidates> getCandidates(@PathVariable(value = "companyId") Long companyId) {
+		List<CompanyCandidates>  candidates = companyCandidatesRepository.getCandidateByCompanyId(companyId);
+		return candidates;
 	}
 }

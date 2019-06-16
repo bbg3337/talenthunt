@@ -29,6 +29,12 @@ import com.talenthunt.api.enums.QuestionTypeCD;
 @Table(name = "a2t_question_bank")
 @EntityListeners(AuditingEntityListener.class)
 public class Questions {
+	public Questions() {
+	}
+	public Questions(Long id) {
+		this.id =  id;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="question_id",columnDefinition="int")
