@@ -1,11 +1,14 @@
 package com.talenthunt.api.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +43,11 @@ public class CompanyController {
 	@Autowired
 	private CompanyCandidatesRepository companyCandidatesRepository; 
 	
+	@Autowired
+    private JavaMailSender javaMailSender;
+	
+	@Autowired
+	private CommonService commonService;
 	
 	@PostMapping("/add")
 	public Company createCompany(@Valid @RequestBody Company company) {
@@ -98,8 +106,22 @@ public class CompanyController {
 	}
 	
 	@PostMapping("/candidates/create")
-	public CompanyCandidates createCandidates(@Valid @RequestBody CompanyCandidates companyCandidates) {
+	public CompanyCandidates createCandidates(@Valid @RequestBody CompanyCandidates companyCandidates) throws Exception {
+		companyCandidates.setAccessCode(commonService.generatePassword(16));
+		System.out.println("CompanyController.createCandidates()" + companyCandidates.getAccessCode());
+		companyCandidates.setAccessCodeCreatedDate(new Date());
 		CompanyCandidates  candidates = companyCandidatesRepository.save(companyCandidates);
+		if(candidates != null)
+		{
+			try {
+				commonService.sendEmail(candidates.getCandidateEmailId(), "Access Your Assignment", candidates.getAccessCode());	
+			}catch(MailAuthenticationException e){
+				throw new Exception("Record save but email not send due to Username and password are invelid");
+			}catch (Exception e) {
+				throw e;
+			}
+	        
+		}
 		return candidates;
 	}
 	

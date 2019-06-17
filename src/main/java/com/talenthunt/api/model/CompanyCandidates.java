@@ -56,6 +56,13 @@ public class CompanyCandidates {
 	@Column(name="company_id")
 	private Long companyId;
 
+	@Column(name="access_code")
+	private String accessCode;
+	
+	@JsonFormat(pattern="MM-dd-yyyy HH:mm:ss")
+	@Column(name="access_code_created_date")
+	private Date accessCodeCreatedDate;
+	
 	public Long getId() {
 		return id;
 	}
@@ -142,6 +149,22 @@ public class CompanyCandidates {
 
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getAccessCode() {
+		return accessCode;
+	}
+
+	public void setAccessCode(String accessCode) {
+		this.accessCode = accessCode;
+	}
+
+	public Date getAccessCodeCreatedDate() {
+		return accessCodeCreatedDate;
+	}
+
+	public void setAccessCodeCreatedDate(Date accessCodeCreatedDate) {
+		this.accessCodeCreatedDate = accessCodeCreatedDate;
 	}
 	
 }

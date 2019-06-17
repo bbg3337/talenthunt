@@ -3,8 +3,20 @@ package com.talenthunt.api.service;
 import java.util.Date;
 import java.util.Random;
 
+import javax.mail.AuthenticationFailedException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+@Service
 public class CommonService {
 
+	@Autowired
+    private JavaMailSender javaMailSender;
+	
 	public static String generatePassword(int j) {
 		Random random = new Random((new Date()).getTime());
 
@@ -17,5 +29,23 @@ public class CommonService {
 			out.append(values[idx]);
 		}
 		return out.toString();
+	}
+	
+	public boolean sendEmail(String to,String subject,String text) throws AuthenticationFailedException{
+		 
+		try {
+			SimpleMailMessage msg = new SimpleMailMessage();
+	        msg.setTo(to);
+	        msg.setSubject(subject);
+	        msg.setText(text);
+	        javaMailSender.send(msg);
+	        return true;
+		}catch(MailAuthenticationException e){
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			 return false;
+		}
+		
 	}
 }
