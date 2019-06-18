@@ -167,4 +167,5 @@ public class CompanyCandidates {
 		this.accessCodeCreatedDate = accessCodeCreatedDate;
 	}
 	
+	
 }

@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
+import com.talenthunt.api.model.Assesment;
 import com.talenthunt.api.model.Company;
 import com.talenthunt.api.model.CompanyCandidates;
 import com.talenthunt.api.model.User;
+import com.talenthunt.api.repository.AssessmentRepository;
 import com.talenthunt.api.repository.CompanyCandidatesRepository;
 import com.talenthunt.api.repository.CompanyRepository;
 import com.talenthunt.api.repository.UserRepository;
@@ -48,6 +51,9 @@ public class CompanyController {
 	
 	@Autowired
 	private CommonService commonService;
+	
+	@Autowired
+	private AssessmentRepository assessmentRepository;
 	
 	@PostMapping("/add")
 	public Company createCompany(@Valid @RequestBody Company company) {
@@ -130,4 +136,31 @@ public class CompanyController {
 		List<CompanyCandidates>  candidates = companyCandidatesRepository.getCandidateByCompanyId(companyId);
 		return candidates;
 	}
+	
+	@PostMapping("/candidates/login")
+	public CompanyCandidates loginCandidates(@RequestBody ObjectNode objectNode) throws Exception{
+		String email =  objectNode.get("email").asText();
+		String accessCode =  objectNode.get("accessCode").asText();
+		if(email == null || accessCode == null){
+			throw new Exception("Email or Access code is null");
+		}else{
+			CompanyCandidates companyCandidates= companyCandidatesRepository.validateAccessCode(email, accessCode);
+			if(companyCandidates !=  null){
+				return companyCandidates;
+			}
+			throw new Exception("Email or Access code not match with existing record");
+		}
+	}
+	
+	@PostMapping("/candidates/getAssessment")
+	public List<Assesment> getCandidatesAssessment(@RequestBody ObjectNode objectNode) throws ResourceNotFoundException{
+		 List assessmnetList = assessmentRepository.getCandidatesAssessment(objectNode.get("email").asText());
+		 System.out.println("CompanyController.getCandidatesAssessment()" + objectNode.get("email").asText());
+		 if(assessmnetList == null || assessmnetList.size() == 0){
+			throw new ResourceNotFoundException("Assessment not found ");
+		 }else{
+			 return assessmnetList;	 
+		 }
+	}
+	
 }
