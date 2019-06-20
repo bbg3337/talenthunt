@@ -10,4 +10,8 @@ public enum QuestionTypeCD {
 	QuestionTypeCD(String value){
 		this.value= value;
 	}
+	
+	public String getValue() {
+		return value;
+	}
 }

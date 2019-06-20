@@ -1,5 +1,6 @@
 package com.talenthunt.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.talenthunt.api.bo.KeyValue;
+import com.talenthunt.api.enums.QuestionTypeCD;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Questions;
 import com.talenthunt.api.repository.QuestionsRepository;
@@ -75,5 +78,18 @@ public class QuestionsController {
 			return ResponseEntity.ok("Delete Failed");
 		} 
 				
+	}
+	
+	@GetMapping("questionType/get")
+	public List<KeyValue> getByQuestionType()throws ResourceNotFoundException {
+		List<KeyValue> keyValues = new ArrayList<>();
+		for (QuestionTypeCD questionTypeCD: QuestionTypeCD.values()) { 
+		    KeyValue keyValue =new KeyValue();
+		    String key = questionTypeCD.getValue();
+		    keyValue.setKey(key);
+		    keyValue.setValue(key.replaceAll("_", " "));
+		    keyValues.add(keyValue);
+		}
+		return keyValues;
 	}
 }
