@@ -1,10 +1,10 @@
 package com.talenthunt.api.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -19,15 +19,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.talenthunt.api.bo.SubmitAssessment;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Assesment;
 import com.talenthunt.api.model.AssesmentDetails;
 import com.talenthunt.api.model.Questions;
-import com.talenthunt.api.model.User;
+import com.talenthunt.api.model.UserScoreboard;
 import com.talenthunt.api.repository.AssessmentDetailsRepository;
 import com.talenthunt.api.repository.AssessmentRepository;
-
-import io.micrometer.core.ipc.http.HttpSender.Response;
+import com.talenthunt.api.repository.UserScoreboardRepository;
+import com.talenthunt.api.service.AssesmentService;
 
 /**
  * Controller for AssessMent
@@ -48,7 +49,11 @@ public class AssesmentController
 	@Autowired
 	private AssessmentDetailsRepository assessmentDetailsRepository;
 	
+	@Autowired
+	private AssesmentService assesmentService;
 	
+	@Autowired
+	private UserScoreboardRepository userScoreboardRepository;
 	
 	/**
 	 * Create Assessment 
@@ -118,5 +123,10 @@ public class AssesmentController
 			System.out.println("AssesmentController.addQuestionInAssessment()");
 		}
 		return assesmentDetailsList;
+	}
+	
+	@PostMapping("/assessment/submitAssessment")
+	public UserScoreboard submitAssessment(@Valid @RequestBody SubmitAssessment submitAssessment) throws IOException{
+		return userScoreboardRepository.save(assesmentService.calculateAssessmentScore(submitAssessment));
 	}
 }
