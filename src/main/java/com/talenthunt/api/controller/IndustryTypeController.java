@@ -41,7 +41,7 @@ public class IndustryTypeController {
 	public ResponseEntity<IndustryType> getIndustryTypeById(@PathVariable(value = "id") Long id)
 			throws ResourceNotFoundException {
 		IndustryType IndustryType = industryTypeRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Question not found on :: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Industry Type not found on :: " + id));
 		return ResponseEntity.ok().body(IndustryType);
 	}
 	

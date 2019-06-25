@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.talenthunt.api.exception.ResourceNotFoundException;
-import com.talenthunt.api.model.Assesment;
 import com.talenthunt.api.model.Industries;
 import com.talenthunt.api.repository.IndustriesRepository;
 
