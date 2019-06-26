@@ -23,7 +23,7 @@ import com.talenthunt.api.repository.DiscountGridRepository;
 @CrossOrigin
 public class DiscountGridController {
 	@Autowired
-	private DiscountGridRepository discountGridRepository ;
+	private DiscountGridRepository discountGridRepository;
 
 	@PostMapping("/create")
 	public DiscountGrid createDiscountGrid(@Valid @RequestBody DiscountGrid discountGrid) {
