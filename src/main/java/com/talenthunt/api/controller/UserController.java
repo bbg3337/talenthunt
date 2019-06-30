@@ -129,17 +129,20 @@ public class UserController {
 	public ResponseEntity<User> loginMethod(@RequestParam String userName, @RequestParam String password)
 			throws ResourceNotFoundException {		
   		System.out.println("UserController.loginMethod() userName : " + userName);
-		boolean flag = true;		
+		boolean flag = true;	
+		User user = new User();
 		for (User users : userRepository.getByEmailId(userName)) {
 			if (users.getEmail().equals(userName) && users.getPassword().equals(password)) {
 				flag = false;
+				user.setId(users.getId());
+				user.setEmail(users.getEmail());				
 				return ResponseEntity.ok(users);
 			}
 		}
 		if (flag) {
 			throw new ResourceNotFoundException("User not found");
 		}
-		return ResponseEntity.ok(new User());
+		return ResponseEntity.ok(user);
 	}
   	
   	@PostMapping("/users/createUserByCompany/{companyId}")
