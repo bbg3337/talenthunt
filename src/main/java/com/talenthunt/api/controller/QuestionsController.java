@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.talenthunt.api.bo.KeyValue;
@@ -50,11 +51,21 @@ public class QuestionsController {
 		return ResponseEntity.ok().body(questions);
 	}
 	
-	@GetMapping("/get/{subjectId}/{topicId}/{languageId}")
-	public List<Questions> getByQuestionType(@PathVariable(value = "subjectId") Long subjectId,
-			@PathVariable(value = "topicId") Long topicId,
-			@PathVariable(value = "languageId") Long languageId)
+	@GetMapping("/get")
+	public List<Questions> getByQuestionType(@RequestParam(value = "subjectId",required=false) Long subjectId,
+			@RequestParam(value = "topicId",required=false) Long topicId,
+			@RequestParam(value = "languageId",required=false) Long languageId)
 			throws ResourceNotFoundException {
+		if(subjectId == null){
+			subjectId = 0l;
+		}
+		if(topicId == null){
+			topicId = 0l;
+		}
+		if(languageId == null){
+			languageId = 0l;
+		}
+		
 		List<Questions> questions = questionsRepository.getByQuestionType(subjectId,topicId,languageId);
 		return questions;
 	}
