@@ -48,6 +48,7 @@ public class SubjectController {
 	public Subject updateSubject(@Valid @RequestBody Subject subject) {
 		Subject sub = subjectRepository.getOne(subject.getSubjectId());
 		sub.setSubjectName(subject.getSubjectName());
+		sub.setIndustryId(subject.getIndustryId());
 		return subjectRepository.save(sub);
 	}
 }

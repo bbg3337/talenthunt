@@ -35,6 +35,9 @@ public class Subject {
 	@Column(name = "subject_name", nullable = false)
 	private String subjectName;
 
+	@Column(name = "industry_id", columnDefinition = "int")
+	private Long industryId;
+	
 	public Long getSubjectId() {
 		return subjectId;
 	}
@@ -49,6 +52,12 @@ public class Subject {
 
 	public void setSubjectName(String subjectName) {
 		this.subjectName = subjectName;
+	}
+	public Long getIndustryId() {
+		return industryId;
+	}
+	public void setIndustryId(Long industryId) {
+		this.industryId = industryId;
 	}
 
 }
