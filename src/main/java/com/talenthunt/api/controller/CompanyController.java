@@ -162,5 +162,15 @@ public class CompanyController {
 			 return assessmnetList;	 
 		 }
 	}
+	@PostMapping("/candidates/getAssessmentBaseOnToken")
+	public List<Assesment> getCandidatesAssessmentBaseOnToken(@RequestBody ObjectNode objectNode) throws ResourceNotFoundException{
+		System.out.println("CompanyController + " +objectNode.get("accessCode").asText()); 
+		List assessmnetList = assessmentRepository.getCandidatesAssessmentBaseOnToken(objectNode.get("accessCode").asText());
+		if(assessmnetList == null || assessmnetList.size() == 0){
+			throw new ResourceNotFoundException("Assessment not found ");
+		}else{
+			 return assessmnetList;	 
+		}
+	}
 	
 }
