@@ -78,6 +78,9 @@ public class Company {
     @LastModifiedBy
     private String updatedBy;
 
+    @Column(name = "role_id", nullable=false)
+    private Integer roleId;
+    
 	@Transient
 	List<ContactPerson> contactPersons;
     
@@ -192,5 +195,10 @@ public class Company {
 	public void setContactPersons(List<ContactPerson> contactPersons) {
 		this.contactPersons = contactPersons;
 	}
-	
+	public Integer getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
 }

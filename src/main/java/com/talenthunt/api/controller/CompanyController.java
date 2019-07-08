@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.talenthunt.api.bo.ContactPerson;
 import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Assesment;
@@ -173,4 +174,22 @@ public class CompanyController {
 		}
 	}
 	
+	@PostMapping("/signup")
+	public Company signupCompany(@Valid @RequestBody Company company) {
+	  	ObjectMapper mapperObj = new ObjectMapper();
+	  	try {
+			company.setContactPerson(mapperObj.writeValueAsString(company.getContactPersons()));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+	  	User user = new User();
+	  	user.setEmail(company.getCompanyEmail());
+	  	user.setFirstName(company.getCompanyName());
+	  	user.setLastName(company.getCompanyName());
+	  	user.setUserType(UserType.Admin);
+	  	user.setUserName(company.getCompanyEmail());
+	  	user.setPassword(CommonService.generatePassword(10));
+	  	userRepository.save(user);
+		return companyRepository.save(company);
+	}
 }
