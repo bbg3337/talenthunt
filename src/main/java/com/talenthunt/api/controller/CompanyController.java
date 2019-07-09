@@ -57,7 +57,7 @@ public class CompanyController {
 	private AssessmentRepository assessmentRepository;
 	
 	@PostMapping("/add")
-	public Company createCompany(@Valid @RequestBody Company company) {
+	public Company createCompany(@Valid @RequestBody Company company) throws Exception {
 	  	ObjectMapper mapperObj = new ObjectMapper();
 	  	try {
 			company.setContactPerson(mapperObj.writeValueAsString(company.getContactPersons()));
@@ -71,7 +71,16 @@ public class CompanyController {
 	  	user.setUserType(UserType.Admin);
 	  	user.setUserName(company.getCompanyEmail());
 	  	user.setPassword(CommonService.generatePassword(10));
-	  	userRepository.save(user);
+	  	user=userRepository.save(user);
+		if(user != null){
+	  		try {
+				commonService.sendEmail(user.getEmail(), "Access Your Compnay Login", user.getPassword());	
+			}catch(MailAuthenticationException e){
+				throw new Exception("Record save but email not send due to Username and password are invelid");
+			}catch (Exception e) {
+				throw e;
+			}
+	  	}
 		return companyRepository.save(company);
 	}
 	
@@ -175,13 +184,21 @@ public class CompanyController {
 	}
 	
 	@PostMapping("/signup")
-	public Company signupCompany(@Valid @RequestBody Company company) {
+	public Company signupCompany(@Valid @RequestBody Company company) throws Exception {
+	  	ContactPerson contactPerson =new ContactPerson();
+	  	contactPerson.setName(company.getYourName());
+	  	contactPerson.setEmail(company.getCompanyEmail());
+	  	contactPerson.setPhoneNo(company.getYourPhoneNo());
+	  	contactPerson.setRoleId(company.getYourRoleId());
+	  	company.getContactPersons().add(contactPerson);
+	  	company.setPhoneNo(company.getYourPhoneNo());
 	  	ObjectMapper mapperObj = new ObjectMapper();
 	  	try {
 			company.setContactPerson(mapperObj.writeValueAsString(company.getContactPersons()));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
+	  	
 	  	User user = new User();
 	  	user.setEmail(company.getCompanyEmail());
 	  	user.setFirstName(company.getCompanyName());
@@ -189,7 +206,16 @@ public class CompanyController {
 	  	user.setUserType(UserType.Admin);
 	  	user.setUserName(company.getCompanyEmail());
 	  	user.setPassword(CommonService.generatePassword(10));
-	  	userRepository.save(user);
+	  	user = userRepository.save(user);
+	  	if(user != null){
+	  		try {
+				commonService.sendEmail(user.getEmail(), "Access Your Compnay Login", user.getPassword());	
+			}catch(MailAuthenticationException e){
+				throw new Exception("Record save but email not send due to Username and password are invelid");
+			}catch (Exception e) {
+				throw e;
+			}
+	  	}
 		return companyRepository.save(company);
 	}
 }

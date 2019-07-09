@@ -1,5 +1,6 @@
 package com.talenthunt.api.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,10 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.talenthunt.api.bo.ContactPerson;
+/**
+ * @author Jenisha
+ *
+ */
 @Entity
 @Table(name = "a2t_company")
 @EntityListeners(AuditingEntityListener.class)
@@ -79,11 +84,20 @@ public class Company {
     private String updatedBy;
 
     @Column(name = "role_id", nullable=false)
-    private Integer roleId;
+    private Long roleId;
     
 	@Transient
-	List<ContactPerson> contactPersons;
+	List<ContactPerson> contactPersons= new ArrayList<ContactPerson>();
     
+	@Transient
+	private String yourName;
+	
+	@Transient
+	private String yourPhoneNo;
+	
+	@Transient
+	private Long yourRoleId;
+	
 	public Long getId() {
 		return id;
 	}
@@ -195,10 +209,28 @@ public class Company {
 	public void setContactPersons(List<ContactPerson> contactPersons) {
 		this.contactPersons = contactPersons;
 	}
-	public Integer getRoleId() {
+	public Long getRoleId() {
 		return roleId;
 	}
-	public void setRoleId(Integer roleId) {
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+	public String getYourName() {
+		return yourName;
+	}
+	public void setYourName(String yourName) {
+		this.yourName = yourName;
+	}
+	public String getYourPhoneNo() {
+		return yourPhoneNo;
+	}
+	public void setYourPhoneNo(String yourPhoneNo) {
+		this.yourPhoneNo = yourPhoneNo;
+	}
+	public Long getYourRoleId() {
+		return yourRoleId;
+	}
+	public void setYourRoleId(Long yourRoleId) {
+		this.yourRoleId = yourRoleId;
 	}
 }

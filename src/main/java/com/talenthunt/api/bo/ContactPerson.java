@@ -5,6 +5,7 @@ public class ContactPerson{
 	String designation;
 	String email;
 	String phoneNo;
+	Long roleId;
 
 	public String getName() {
 		return name;
@@ -29,5 +30,11 @@ public class ContactPerson{
 	}
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+	public Long getRoleId() {
+		return roleId;
+	}
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 }
