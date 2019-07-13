@@ -21,16 +21,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.talenthunt.api.bo.ContactPerson;
+import com.talenthunt.api.enums.TestStatus;
 import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Assesment;
 import com.talenthunt.api.model.Company;
 import com.talenthunt.api.model.CompanyCandidates;
 import com.talenthunt.api.model.User;
+import com.talenthunt.api.model.UserScoreboard;
 import com.talenthunt.api.repository.AssessmentRepository;
 import com.talenthunt.api.repository.CompanyCandidatesRepository;
 import com.talenthunt.api.repository.CompanyRepository;
 import com.talenthunt.api.repository.UserRepository;
+import com.talenthunt.api.repository.UserScoreboardRepository;
 import com.talenthunt.api.service.CommonService;
 
 @RestController
@@ -55,6 +58,9 @@ public class CompanyController {
 	
 	@Autowired
 	private AssessmentRepository assessmentRepository;
+	
+	@Autowired
+	private UserScoreboardRepository userScoreboardRepository;
 	
 	@PostMapping("/add")
 	public Company createCompany(@Valid @RequestBody Company company) throws Exception {
@@ -136,8 +142,17 @@ public class CompanyController {
 			}catch (Exception e) {
 				throw e;
 			}
-	        
 		}
+		UserScoreboard userScoreboard =  new UserScoreboard();
+		userScoreboard.setTestStatus(TestStatus.InComplete);
+		
+		//How to get Test type?
+		//userScoreboard.setTestType(assesments.);
+		//How to get topic id, it is not define in the assessment table and any other related table?
+		//userScoreboard.setTopicId(companyCandidates.get);
+		userScoreboard.setUserSeq(candidates.getId());
+		userScoreboard.setCompanyId(candidates.getCompanyId());
+		userScoreboardRepository.save(userScoreboard);
 		return candidates;
 	}
 	

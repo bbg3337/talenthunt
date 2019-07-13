@@ -23,6 +23,7 @@ import com.talenthunt.api.model.Questions;
 import com.talenthunt.api.model.UserScoreboard;
 import com.talenthunt.api.repository.AssessmentRepository;
 import com.talenthunt.api.repository.CompanyCandidatesRepository;
+import com.talenthunt.api.repository.UserScoreboardRepository;
 
 @Service
 public class AssesmentService {
@@ -32,6 +33,9 @@ public class AssesmentService {
 	@Autowired
 	private CompanyCandidatesRepository companyCandidatesRepository;
 
+	@Autowired
+	private UserScoreboardRepository userScoreboardRepository;
+	
 	public UserScoreboard calculateAssessmentScore(@Valid SubmitAssessment submitAssessment) throws IOException {
 		Assesment assesments = assessmentRepository.getAssesmentByQuestionOrder(submitAssessment.getAssessmentId());
 		CompanyCandidates companyCandidates =companyCandidatesRepository.getOne(submitAssessment.getCandidateId()); 
@@ -63,19 +67,18 @@ public class AssesmentService {
 
 			}
 		}
-		UserScoreboard userScoreboard =  new UserScoreboard();
+		
+		UserScoreboard userScoreboard =  userScoreboardRepository.getCandidatesAssessment(companyCandidates.getAssessmentId(), companyCandidates.getCompanyId());
 		userScoreboard.setTestDate(new Date());
-		if(noQuestionsAtempted == 0){
-			userScoreboard.setTestStatus(TestStatus.InComplete);	
-		}else{
-			userScoreboard.setTestStatus(TestStatus.Completed);
-		}
+		//userScoreboard.setTestStatus(TestStatus.InComplete);
+		userScoreboard.setTestStatus(TestStatus.Completed);
+		
 		//How to get Test type?
 		//userScoreboard.setTestType(assesments.);
 		//How to get topic id, it is not define in the assessment table and any other related table?
 		//userScoreboard.setTopicId(companyCandidates.get);
-		userScoreboard.setUserSeq(companyCandidates.getId());
-		userScoreboard.setCompanyId(companyCandidates.getCompanyId());
+		//userScoreboard.setUserSeq(companyCandidates.getId());
+		//userScoreboard.setCompanyId(companyCandidates.getCompanyId());
 		userScoreboard.setNoQuestionsAtempted(noQuestionsAtempted);
 		userScoreboard.setNoOfQuestions(assesments.getAssesmentDetails().size());
 		userScoreboard.setScore(totalScore);

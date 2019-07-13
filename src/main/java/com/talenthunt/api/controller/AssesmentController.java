@@ -69,7 +69,6 @@ public class AssesmentController
 	    	assesmentDetails2.setAssessment(asmnt.getId());
 	    	assessmentDetailsRepository.save(assesmentDetails2);
 	    }
-	    
 		return asmnt; 
 	    
 	  }
