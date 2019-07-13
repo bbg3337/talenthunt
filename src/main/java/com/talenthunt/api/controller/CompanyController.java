@@ -213,7 +213,7 @@ public class CompanyController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-	  	
+	  	Company company2 =  companyRepository.save(company);
 	  	User user = new User();
 	  	user.setEmail(company.getCompanyEmail());
 	  	user.setFirstName(company.getCompanyName());
@@ -221,6 +221,7 @@ public class CompanyController {
 	  	user.setUserType(UserType.Admin);
 	  	user.setUserName(company.getCompanyEmail());
 	  	user.setPassword(CommonService.generatePassword(10));
+	  	user.setCompanyId(company2);
 	  	user = userRepository.save(user);
 	  	if(user != null){
 	  		try {
@@ -231,6 +232,6 @@ public class CompanyController {
 				throw e;
 			}
 	  	}
-		return companyRepository.save(company);
+		return company2;
 	}
 }
