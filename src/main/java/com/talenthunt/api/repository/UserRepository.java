@@ -18,7 +18,7 @@ import com.talenthunt.api.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-	@Query(value = "SELECT * FROM a2t_users user WHERE user.email_address = :emailId", nativeQuery = true)
+	@Query(value = "SELECT * FROM a2t_users user WHERE user.user_email_id = :emailId", nativeQuery = true)
 	List<User> getByEmailId(@Param("emailId")String categoryid);
 
 	@Query(value = "SELECT * FROM a2t_users user WHERE user.company_id= :companyId", nativeQuery = true)

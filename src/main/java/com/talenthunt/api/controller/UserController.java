@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.talenthunt.api.bo.Message;
+import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Company;
 import com.talenthunt.api.model.User;
 import com.talenthunt.api.repository.UserRepository;
+import com.talenthunt.api.service.CommonService;
 
 /**
  * The type User controller.
@@ -40,6 +44,8 @@ public class UserController {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private CommonService commonService;
   /**
    * Get all users list.
    *
@@ -72,11 +78,27 @@ public class UserController {
    *
    * @param user the user
    * @return the user
+ * @throws Exception 
    */
-  @PostMapping("/users")
-  public User createUser(@Valid @RequestBody User user) {
-    return userRepository.save(user);
-  }
+	@PostMapping("/users")
+	public Message createUser(@Valid @RequestBody User user) throws Exception {
+	  	Message msg = new Message();
+		user.setPassword(CommonService.generatePassword(10));
+	  	user.setUserType(UserType.Subscription);
+	  	user = userRepository.save(user);
+	  	if(user != null){
+	  		msg.setStatus("Success");
+	  		try {
+				commonService.sendEmail(user.getEmail(), "Access Your Login", "Your Password is : "+user.getPassword());	
+			}catch(MailAuthenticationException e){
+				throw new Exception("User Created but email not send due to Email credential are invelid");
+			}catch (Exception e) {
+				throw e;
+			}
+	  	}
+	  	msg.setMessage("User created and password sent in email.");
+		return  msg;
+	}
 
   /**
    * Update user response entity.
@@ -143,6 +165,33 @@ public class UserController {
 			throw new ResourceNotFoundException("User not found");
 		}
 		return ResponseEntity.ok(user);
+	}
+  	
+  	@RequestMapping(value = "/forgetPassword", params = { "userName"}, method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Message> loginMethod(@RequestParam String userName)
+			throws Exception {	
+  		Message message = new Message();
+		boolean flag = true;	
+		//User user = new User();
+		for (User users : userRepository.getByEmailId(userName)) {
+			flag = false;	
+			users.setPassword(CommonService.generatePassword(10));
+			try {
+				commonService.sendEmail(users.getEmail(), "Forget Password", "Your Password is : "+users.getPassword());
+				message.setStatus("Success");
+			}catch(MailAuthenticationException e){
+				throw new Exception("User Created but email not send due to Email credential are invelid");
+			}catch (Exception e) {
+				throw e;
+			}
+			userRepository.save(users);
+		}
+		if (flag) {
+			throw new ResourceNotFoundException("User not found");
+		}
+		message.setMessage("New password sent in users email id.");
+		return ResponseEntity.ok(message);
 	}
   	
   	@PostMapping("/users/createUserByCompany/{companyId}")
