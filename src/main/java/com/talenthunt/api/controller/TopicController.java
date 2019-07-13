@@ -90,6 +90,7 @@ public class TopicController
 		  Topic orgTopic =  topicRepository.getOne(topic.getId());
 		  orgTopic.setName(topic.getName());
 		  orgTopic.setSubject(topic.getSubject());
+		  orgTopic.setTopicDesc(topic.getTopicDesc());
 		  return topicRepository.save(orgTopic);
 	  }
 }

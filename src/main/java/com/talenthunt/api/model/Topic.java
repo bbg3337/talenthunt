@@ -40,6 +40,9 @@ public class Topic {
 	@Column(name = "topic_name", nullable = false)
 	private String name;
 
+	@Column(name = "topic_desc", nullable = false)
+	private String topicDesc;
+	
 	@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "subject_id", columnDefinition="int")
 	private Subject subject;
@@ -66,6 +69,14 @@ public class Topic {
 
 	public void setSubject(Subject subject) {
 		this.subject = subject;
+	}
+
+	public String getTopicDesc() {
+		return topicDesc;
+	}
+
+	public void setTopicDesc(String topicDesc) {
+		this.topicDesc = topicDesc;
 	}
 
 }
