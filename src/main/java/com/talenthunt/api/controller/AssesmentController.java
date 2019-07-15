@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.talenthunt.api.bo.Message;
 import com.talenthunt.api.bo.SubmitAssessment;
 import com.talenthunt.api.exception.ResourceNotFoundException;
 import com.talenthunt.api.model.Assesment;
@@ -125,7 +126,16 @@ public class AssesmentController
 	}
 	
 	@PostMapping("/assessment/submitAssessment")
-	public UserScoreboard submitAssessment(@Valid @RequestBody SubmitAssessment submitAssessment) throws IOException{
-		return userScoreboardRepository.save(assesmentService.calculateAssessmentScore(submitAssessment));
+	public Object submitAssessment(@Valid @RequestBody SubmitAssessment submitAssessment) throws IOException{
+		System.out.println("AssesmentController.submitAssessment()");
+		UserScoreboard userScoreboard = assesmentService.calculateAssessmentScore(submitAssessment);
+		if(userScoreboard  == null){
+			Message message =  new Message();
+			message.setStatus("Scoreboard not found");
+			message.setMessage("Assessement is not assign to his candidate.");
+			return message;
+		}else{
+			return userScoreboardRepository.save(userScoreboard);
+		}
 	}
 }
