@@ -127,7 +127,6 @@ public class AssesmentController
 	
 	@PostMapping("/assessment/submitAssessment")
 	public Object submitAssessment(@Valid @RequestBody SubmitAssessment submitAssessment) throws IOException{
-		System.out.println("AssesmentController.submitAssessment()");
 		UserScoreboard userScoreboard = assesmentService.calculateAssessmentScore(submitAssessment);
 		if(userScoreboard  == null){
 			Message message =  new Message();

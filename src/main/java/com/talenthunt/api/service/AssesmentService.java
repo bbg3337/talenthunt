@@ -46,7 +46,6 @@ public class AssesmentService {
 		for (AssessmentQuestionAnswer assessmentQuestionAnswer : submitAssessment.getAssessmnetQuestionAnswer()){
 			queMap.put(assessmentQuestionAnswer.getQuestionId(), assessmentQuestionAnswer.getAnswerList());
 		}
-		System.out.println("AssesmentService.calculateAssessmentScore()1");
 		for (AssesmentDetails assesmentDetail: assesments.getAssesmentDetails()) {
 			Questions que = assesmentDetail.getQuestions();
 			if(queMap.containsKey(que.getId())){
@@ -67,23 +66,14 @@ public class AssesmentService {
 
 			}
 		}
-		System.out.println("AssesmentService.calculateAssessmentScore()2");
 		try {
-			UserScoreboard userScoreboard =  userScoreboardRepository.getCandidatesAssessment(companyCandidates.getAssessmentId(), companyCandidates.getCompanyId());
-			userScoreboard.setTestDate(new Date());
-			//userScoreboard.setTestStatus(TestStatus.InComplete);
+			UserScoreboard userScoreboard =  userScoreboardRepository.getOne(submitAssessment.getScoreboardId());
+			userScoreboard.setStartAssessmentTime(submitAssessment.getStartDate());
+			userScoreboard.setEndAssessmentTime(submitAssessment.getEndDate());
 			userScoreboard.setTestStatus(TestStatus.Completed);
-			
-			//How to get Test type?
-			//userScoreboard.setTestType(assesments.);
-			//How to get topic id, it is not define in the assessment table and any other related table?
-			//userScoreboard.setTopicId(companyCandidates.get);
-			//userScoreboard.setUserSeq(companyCandidates.getId());
-			//userScoreboard.setCompanyId(companyCandidates.getCompanyId());
 			userScoreboard.setNoQuestionsAtempted(noQuestionsAtempted);
 			userScoreboard.setNoOfQuestions(assesments.getAssesmentDetails().size());
 			userScoreboard.setScore(totalScore);
-			System.out.println("AssesmentService.calculateAssessmentScore()3 -"+userScoreboard);
 			return userScoreboard;
 		} catch (NullPointerException e) {
 			e.printStackTrace();

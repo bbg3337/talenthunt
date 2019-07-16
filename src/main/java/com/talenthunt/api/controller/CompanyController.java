@@ -136,14 +136,14 @@ public class CompanyController {
 		if(candidates != null)
 		{
 			try {
-				commonService.sendEmail(candidates.getCandidateEmailId(), "Access Your Assignment", candidates.getAccessCode());	
+				commonService.sendEmail(candidates.getCandidateEmailId(), "Access Your Accounts", candidates.getAccessCode());	
 			}catch(MailAuthenticationException e){
 				throw new Exception("Record save but email not send due to Username and password are invelid");
 			}catch (Exception e) {
 				throw e;
 			}
 		}
-		UserScoreboard userScoreboard =  new UserScoreboard();
+	/*	UserScoreboard userScoreboard =  new UserScoreboard();
 		userScoreboard.setTestStatus(TestStatus.InComplete);
 		
 		//How to get Test type?
@@ -152,7 +152,7 @@ public class CompanyController {
 		//userScoreboard.setTopicId(companyCandidates.get);
 		userScoreboard.setUserSeq(candidates.getId());
 		userScoreboard.setCompanyId(candidates.getCompanyId());
-		userScoreboardRepository.save(userScoreboard);
+		userScoreboardRepository.save(userScoreboard);*/
 		return candidates;
 	}
 	
@@ -160,6 +160,26 @@ public class CompanyController {
 	public List<CompanyCandidates> getCandidates(@PathVariable(value = "companyId") Long companyId) {
 		List<CompanyCandidates>  candidates = companyCandidatesRepository.getCandidateByCompanyId(companyId);
 		return candidates;
+	}
+	
+	@PostMapping("/candidates/assignAssessment")
+	public UserScoreboard assignAssessment(@RequestBody ObjectNode objectNode) throws Exception{
+		Long candidateId = objectNode.get("candidateId").asLong();
+		Long assessmentId = objectNode.get("assessmentId").asLong();
+		Long companyId = objectNode.get("companyId").asLong();
+		UserScoreboard userScoreboard =  new UserScoreboard();
+		userScoreboard.setTestStatus(TestStatus.InComplete);
+		
+		//How to get Test type?
+		//userScoreboard.setTestType(assesments.);
+		//How to get topic id, it is not define in the assessment table and any other related table?
+		//userScoreboard.setTopicId(companyCandidates.get);
+		userScoreboard.setUserSeq(candidateId);
+		userScoreboard.setCompanyId(companyId);
+		userScoreboard.setAssessmentId(assessmentId);
+		userScoreboard.setTestDate(new Date());
+		
+		return userScoreboardRepository.save(userScoreboard);
 	}
 	
 	@PostMapping("/candidates/login")

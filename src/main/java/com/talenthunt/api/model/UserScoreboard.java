@@ -58,6 +58,18 @@ public class UserScoreboard {
 	@Column(name="score")
 	private Double score;
 
+	@Column(name="assessment_id", columnDefinition="int")
+	private Long assessmentId;
+	
+	@JsonFormat(pattern="MM-dd-yyyy HH:mm:ss")
+	@Column(name="start_assessment_time")
+	private Date startAssessmentTime;
+
+	@JsonFormat(pattern="MM-dd-yyyy HH:mm:ss")
+	@Column(name="end_assessment_time")
+	private Date endAssessmentTime;
+
+	
 	public Long getScoreboardId() {
 		return scoreboardId;
 	}
@@ -136,5 +148,29 @@ public class UserScoreboard {
 
 	public void setScore(Double score) {
 		this.score = score;
+	}
+
+	public Long getAssessmentId() {
+		return assessmentId;
+	}
+
+	public void setAssessmentId(Long assessmentId) {
+		this.assessmentId = assessmentId;
+	}
+
+	public Date getStartAssessmentTime() {
+		return startAssessmentTime;
+	}
+
+	public void setStartAssessmentTime(Date startAssessmentTime) {
+		this.startAssessmentTime = startAssessmentTime;
+	}
+
+	public Date getEndAssessmentTime() {
+		return endAssessmentTime;
+	}
+
+	public void setEndAssessmentTime(Date endAssessmentTime) {
+		this.endAssessmentTime = endAssessmentTime;
 	}
 }
