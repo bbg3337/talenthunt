@@ -1,5 +1,6 @@
 package com.talenthunt.api.util;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -22,5 +23,25 @@ public class CommonUtil {
 		}
 		return true;
 
+	}
+	
+	public boolean deleteFolderWithFile(String filePath){
+		File index = new File(filePath);
+		String[]entries = index.list();
+		for(String s: entries){
+		    File currentFile = new File(index.getPath(),s);
+		    currentFile.delete();
+		}
+		return index.delete();
+	}
+
+	public String validateJavaCode(String code) {
+		code = code.trim();
+		if(!code.startsWith("package")){
+			return code.substring(code.indexOf("class")+5, code.indexOf("{")).trim();
+		}else{
+			return "Package Key word not allowed";	
+		}
+		
 	}
 }
