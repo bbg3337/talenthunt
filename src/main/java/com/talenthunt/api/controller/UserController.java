@@ -87,6 +87,11 @@ public class UserController {
 	  	user.setUserType(UserType.Subscription);
 	  	user = userRepository.save(user);
 	  	if(user != null){
+	  		if(commonService.isListEmpty(userRepository.getByEmailId(user.getEmail()))){
+		  		msg.setStatus("Error");
+		  		msg.setMessage("Duplicate Email id");
+		  		return msg;
+		  	}
 	  		msg.setStatus("Success");
 	  		try {
 				commonService.sendEmail(user.getEmail(), "Access Your Login", "Your Password is : "+user.getPassword());	

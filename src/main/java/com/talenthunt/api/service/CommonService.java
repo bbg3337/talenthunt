@@ -1,6 +1,7 @@
 package com.talenthunt.api.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.AuthenticationFailedException;
@@ -60,5 +61,9 @@ public class CommonService {
 			 return false;
 		}
 		
+	}
+	
+	public boolean isListEmpty(List list){
+		return list == null || list.isEmpty();
 	}
 }

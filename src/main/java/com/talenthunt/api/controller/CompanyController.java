@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.talenthunt.api.bo.ContactPerson;
+import com.talenthunt.api.bo.Message;
 import com.talenthunt.api.enums.TestStatus;
 import com.talenthunt.api.enums.UserType;
 import com.talenthunt.api.exception.ResourceNotFoundException;
@@ -219,7 +220,7 @@ public class CompanyController {
 	}
 	
 	@PostMapping("/signup")
-	public Company signupCompany(@Valid @RequestBody Company company) throws Exception {
+	public Object signupCompany(@Valid @RequestBody Company company) throws Exception {
 	  	ContactPerson contactPerson =new ContactPerson();
 	  	contactPerson.setName(company.getYourName());
 	  	contactPerson.setEmail(company.getCompanyEmail());
@@ -227,6 +228,14 @@ public class CompanyController {
 	  	contactPerson.setRoleId(company.getYourRoleId());
 	  	company.getContactPersons().add(contactPerson);
 	  	company.setPhoneNo(company.getYourPhoneNo());
+	  	
+	  	if(commonService.isListEmpty(userRepository.getByEmailId(company.getCompanyEmail()))){
+	  		Message message =  new Message();
+	  		message.setStatus("Error");
+	  		message.setMessage("Duplicate Email id");
+	  		return message;
+	  	}
+	  	
 	  	ObjectMapper mapperObj = new ObjectMapper();
 	  	try {
 			company.setContactPerson(mapperObj.writeValueAsString(company.getContactPersons()));
